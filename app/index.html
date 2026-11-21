@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src https://api.github.com; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#22170f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Aprobar">
+<title>Aprobar posts</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="barra">
+  <div>
+    <div class="marca">Poker Buenos Aires</div>
+    <h1>Posts para aprobar</h1>
+  </div>
+  <button id="btn-recargar" class="icono" aria-label="Recargar" hidden>↻</button>
+</header>
+
+<main id="vista">
+  <section id="v-config" hidden>
+    <h2>Conectar con GitHub</h2>
+    <p>Esta app usa tu cuenta de GitHub para aprobar (Merge) o rechazar los posts. Necesita un <b>token de acceso</b> que creás vos en GitHub y que queda guardado <b>solo en este celular</b>.</p>
+    <ol class="pasos">
+      <li>Abrí <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → Fine-grained token</a>.</li>
+      <li>Nombre: <i>App aprobar posts</i>. Vencimiento: el que prefieras.</li>
+      <li><b>Repository access:</b> Only select repositories → <b>ig-brain</b>.</li>
+      <li><b>Permissions:</b> Contents → <b>Read and write</b> · Pull requests → <b>Read and write</b>.</li>
+      <li>Generate token, copialo y pegalo acá abajo.</li>
+    </ol>
+    <form id="f-config" autocomplete="off">
+      <label>Repositorio <input id="in-repo" value="Tizi14rp/ig-brain" required spellcheck="false" autocapitalize="off"></label>
+      <label>Token <input id="in-token" type="password" required spellcheck="false" autocapitalize="off" placeholder="github_pat_…"></label>
+      <button class="primario" type="submit">Guardar en este celular</button>
+      <p id="config-error" class="error" role="alert"></p>
+    </form>
+    <p class="nota">No compartas este token con nadie (tampoco en el chat). Si perdés el celular, borralo desde GitHub → Settings → Tokens.</p>
+  </section>
+
+  <section id="v-lista" hidden>
+    <div id="lista"></div>
+    <details class="historial">
+      <summary>Últimos resueltos</summary>
+      <div id="resueltos"></div>
+    </details>
+  </section>
+
+  <p id="estado" class="estado" role="status"></p>
+</main>
+
+<footer class="pie">
+  <button id="btn-salir" class="link" hidden>Desconectar este celular</button>
+</footer>
+
+<dialog id="dlg">
+  <form method="dialog" class="dlg">
+    <h3 id="dlg-titulo"></h3>
+    <p id="dlg-texto"></p>
+    <textarea id="dlg-input" rows="4" hidden placeholder="¿Qué querés cambiar?"></textarea>
+    <div class="acciones">
+      <button value="no" class="secundario">Cancelar</button>
+      <button value="si" id="dlg-ok" class="primario">Confirmar</button>
+    </div>
+  </form>
+</dialog>
+
+<template id="t-post">
+  <article class="post">
+    <div class="meta"><span class="chip formato"></span><span class="chip pilar"></span><span class="fecha"></span></div>
+    <h2 class="tema"></h2>
+    <div class="carrusel" tabindex="0" aria-label="Imágenes del post"></div>
+    <div class="puntos"></div>
+    <div class="caption"></div>
+    <div class="hashtags"></div>
+    <dl class="datos"></dl>
+    <p class="aviso" hidden></p>
+    <div class="acciones">
+      <button class="peligro b-rechazar">Rechazar</button>
+      <button class="secundario b-cambios">Pedir cambios</button>
+      <button class="primario b-aprobar">Aprobar</button>
+    </div>
+    <a class="ver-gh" target="_blank" rel="noopener">Ver en GitHub</a>
+  </article>
+</template>
+
+<script src="app.js" type="module"></script>
+</body>
+</html>
